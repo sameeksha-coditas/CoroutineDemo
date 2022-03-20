@@ -15,7 +15,14 @@ class MainActivity : AppCompatActivity() {
 
         runBlocking {
             Logger.infoLog("Start of runBlocking")
-            delay(5000L)
+            launch(Dispatchers.IO){
+                delay(3000L)
+                Logger.infoLog("Finished IO Coroutine 1")
+            }
+            launch(Dispatchers.IO){
+                delay(3000L)
+                Logger.infoLog("Finished IO Coroutine 2")
+            }
             Logger.infoLog("End of runBlocking")
         }
 
