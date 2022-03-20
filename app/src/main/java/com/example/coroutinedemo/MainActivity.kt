@@ -10,29 +10,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val text=findViewById<TextView>(R.id.tvAnswer)
 
-        GlobalScope.launch(Dispatchers.IO){
-            Logger.infoLog("Starting coroutine in thread ${Thread.currentThread().name}")
-            val answer=doNetworkCall()
-            withContext(Dispatchers.Main)
-            {
-                Logger.infoLog("Setting text in thread ${Thread.currentThread().name}")
-             text.text=answer;
-            }
+        Logger.infoLog("Before runBlocking")
+
+        runBlocking {
+            Logger.infoLog("Start of runBlocking")
+            delay(5000L)
+            Logger.infoLog("End of runBlocking")
         }
-        Logger.infoLog("Hello from thread  ${Thread.currentThread().name}")
-    }
 
-    private suspend fun doNetworkCall():String{
-        delay(3000L)
-        return "This is the answer"
-    }
+        Logger.infoLog("After runBlocking")
 
-    private suspend fun doNetworkCall2():String{
-        delay(3000L)
-        return "This is the answer"
     }
-
 
 }
