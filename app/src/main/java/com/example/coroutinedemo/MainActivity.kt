@@ -2,9 +2,8 @@ package com.example.coroutinedemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import android.widget.TextView
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,25 +11,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        GlobalScope.launch{
-           val networkCallAnswer=doNetworkCall()
-            val networkCallAnswer2=doNetworkCall2()
-           Logger.infoLog("Hello from Coroutine  ${Thread.currentThread().name}")
-            Logger.infoLog(" $networkCallAnswer")
-            Logger.infoLog(" $networkCallAnswer2")
+        Logger.infoLog("Before runBlocking")
+
+        runBlocking {
+            Logger.infoLog("Start of runBlocking")
+            launch(Dispatchers.IO){
+                delay(3000L)
+                Logger.infoLog("Finished IO Coroutine 1")
+            }
+            launch(Dispatchers.IO){
+                delay(3000L)
+                Logger.infoLog("Finished IO Coroutine 2")
+            }
+            Logger.infoLog("End of runBlocking")
         }
-        Logger.infoLog("Hello from thread  ${Thread.currentThread().name}")
-    }
 
-    suspend fun doNetworkCall():String{
-        delay(3000L)
-        return "This is the answer"
-    }
+        Logger.infoLog("After runBlocking")
 
-    suspend fun doNetworkCall2():String{
-        delay(3000L)
-        return "This is the answer"
     }
-
 
 }
